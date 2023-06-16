@@ -1,4 +1,4 @@
-# Child Theme Gulp Scaffold
+# Wordpress Child Theme Gulp Scaffold
 This theme is created and maintained by Matthew Hall, Matthewhall.info, as a starter for developing on client sites. 
 
 The purpose of this is simply to generate a gulp process for developing templates with gulp running my build/linting on SCSS/JS/PHP. 
@@ -17,3 +17,5 @@ some .env variables may be moved to git depending on the open/closedness of your
 
 ## This is a Child Theme
 - Current basis is as a child of Astra theme
+
+
