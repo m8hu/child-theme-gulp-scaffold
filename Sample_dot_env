@@ -1,0 +1,12 @@
+# Environment variables.
+#replace ##SiteName## with the name of your local site
+#replace ##themeName## with the name of your theme
+# trace the path to your local site with a correct number of "../" to get to the root of your local site
+localSync='../../../Local Sites/##SiteName##/app/public/wp-content/themes/##themeName##'
+
+parentThemeName=astra
+themeName=astra-child
+themeNiceName=Astra Child
+
+# I comment out theme version while working, this allows datejs substitution on the version number to keep things running w/o cache
+#themeVersion=1.0.0
