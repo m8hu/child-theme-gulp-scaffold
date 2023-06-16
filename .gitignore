@@ -1,4 +1,10 @@
+#NEVER COMMIT TO GIT
 .env
 .DS_Store
-
 /node_modules
+
+#Don't Commit to this project
+/build
+/dist
+
+# have fun!
