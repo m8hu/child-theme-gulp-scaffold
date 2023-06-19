@@ -4,8 +4,13 @@
 # trace the path to your local site with a correct number of "../" to get to the root of your local site
 localSync='../../../Local Sites/##SiteName##/app/public/wp-content/themes/##themeName##'
 
+# Parent theme folder name
 parentThemeName=astra
+
+## I also use the themeName (child theme slug) as the text-domain for child themes. You should modify the script accordingly if you do not. 
 themeName=astra-child
+
+# usually the client name or presented name for your child theme. 
 themeNiceName=Astra Child
 
 # I comment out theme version while working, this allows datejs substitution on the version number to keep things running w/o cache
