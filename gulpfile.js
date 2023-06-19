@@ -6,7 +6,6 @@ var gulp = require('gulp');
 const { watch, series } = require('gulp');
 var rename = require('gulp-rename');
 var replace = require('gulp-string-replace');
-var fileSync = require('gulp-file-sync');
 const zip = require('gulp-zip');
 
 
@@ -87,6 +86,7 @@ gulp.task('style', gulp.parallel(function () {
         .pipe(gulpsourcemaps.write())
         .pipe(replace(replacements.themeVersion.find, replacements.themeVersion.replace))
         .pipe(replace(replacements.themeName.find, replacements.themeName.replace))
+        .pipe(replace(replacements.themeNiceName.find, replacements.themeNiceName.replace))
         .pipe(replace(replacements.parentThemeName.find, replacements.parentThemeName.replace))
         .pipe(gulp.dest(paths.build));
 }));
@@ -107,6 +107,7 @@ gulp.task('sass', gulp.parallel(function () {
         .pipe(gulpsourcemaps.write())
         .pipe(replace(replacements.themeVersion.find, replacements.themeVersion.replace))
         .pipe(replace(replacements.themeName.find, replacements.themeName.replace))
+        .pipe(replace(replacements.themeNiceName.find, replacements.themeNiceName.replace))
         .pipe(replace(replacements.parentThemeName.find, replacements.parentThemeName.replace))
         .pipe(gulp.dest(paths.build_scss));
 }));
@@ -130,6 +131,7 @@ gulp.task('minjs', gulp.parallel(function () {
         )
         .pipe(replace(replacements.themeVersion.find, replacements.themeVersion.replace))
         .pipe(replace(replacements.themeName.find, replacements.themeName.replace))
+        .pipe(replace(replacements.themeNiceName.find, replacements.themeNiceName.replace))
         .pipe(replace(replacements.parentThemeName.find, replacements.parentThemeName.replace))
 
         .pipe(gulp.dest(paths.build_js));
@@ -160,28 +162,25 @@ gulp.task('watch_php', function () {
 });
 
 
-
-
-// gulp file sync really only seeems to work as a watch task. 
+// filesync removed. The gulp watch did not follow as expected.
 // gulp.task('sync-local', function () {
-//     return gulp
-//         .src(['./build/*.*'])
-//         .pipe(fileSync(paths.build[0], paths.localSync, { recursive: false }));
+//     gulp.watch(paths.build,
+//         function () {
+//             // fileSync(paths.build[0], paths.localSync, { recursive: true });
+//         });
 // });
 
-// gulp.task('push-local', gulp.series(
-//     'sass',
-//     'php-lint',
-//     'minjs',
-//     'sync-local'
-// )); 
 
 gulp.task('sync-local', function () {
-    gulp.watch(paths.build,
-        function () {
-            fileSync(paths.build[0], paths.localSync, { recursive: true });
-        });
+    return gulp
+        .src(paths.build_sync)
+        .pipe(gulp.dest(paths.localSync));
 });
+
+gulp.task('watch-local', function () {
+    gulp.watch(paths.build_sync + '*', gulp.parallel(['sync-local']));
+});
+
 
 gulp.task('build',
     gulp.series([
@@ -193,10 +192,7 @@ gulp.task('build',
 );
 
 gulp.task('sync-work', gulp.series(
-    'sass',
-    'style',
-    'php-lint',
-    'minjs',
+    "build",
     gulp.parallel([
         'watch_scss',
         'watch_js',
@@ -209,11 +205,12 @@ gulp.task('default', gulp.series(
     'build'
 ));
 
-exports.default = () => (
-    gulp.src('build/*')
-        .pipe(zip(replacements.themeName.replace + '.zip'))
-        .pipe(gulp.dest('dist'))
-);
+// added build task to default, no longer need export on build task. 
+// exports.default = () => (
+//     gulp.src('build/*')
+//         .pipe(zip(replacements.themeName.replace + '.zip'))
+//         .pipe(gulp.dest('dist'))
+// );
 
 exports.build = () => (
     gulp.src('build/*')
